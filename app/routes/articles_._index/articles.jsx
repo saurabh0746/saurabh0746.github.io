@@ -144,13 +144,14 @@ export function Articles() {
       <Heading className={styles.heading} level={5} as="h1">
         <DecoderText text="Latest articles" />
       </Heading>
-      <Barcode className={styles.barcode} />
+      {/* <Barcode className={styles.barcode} /> */}
     </header>
   );
 
   const postList = (
     <div className={styles.list}>
-      {!isSingleColumn && postsHeader}
+      {/* {!isSingleColumn && postsHeader} */}
+      {postsHeader}
       {posts.map(({ slug, ...post }, index) => (
         <ArticlesPost key={slug} slug={slug} index={index} {...post} />
       ))}
@@ -167,19 +168,9 @@ export function Articles() {
   return (
     <article className={styles.articles}>
       <Section className={styles.content}>
-        {!isSingleColumn && (
-          <div className={styles.grid}>
-            {postList}
-            {featuredPost}
-          </div>
-        )}
-        {isSingleColumn && (
-          <div className={styles.grid}>
-            {postsHeader}
-            {featuredPost}
+         <div className={styles.grid}>
             {postList}
           </div>
-        )}
       </Section>
       <Footer />
     </article>

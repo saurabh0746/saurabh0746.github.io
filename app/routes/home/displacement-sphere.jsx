@@ -97,6 +97,9 @@ export const DisplacementSphere = props => {
     const dirLight = new DirectionalLight(0xffffff, theme === 'light' ? 1.8 : 2.0);
     const ambientLight = new AmbientLight(0xffffff, theme === 'light' ? 2.7 : 0.4);
 
+    console.log("dirLightdirLight", dirLight, ambientLight);
+    
+
     dirLight.position.z = 200;
     dirLight.position.x = 100;
     dirLight.position.y = 100;

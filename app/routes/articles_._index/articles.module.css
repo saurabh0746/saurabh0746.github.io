@@ -27,15 +27,19 @@
   height: 100%;
 
   @media (--mediaDesktop) {
-    --verticalPadding: var(--spaceOuter);
+    /* --verticalPadding: var(--spaceOuter);
 
     gap: var(--space4XL);
-    padding-left: 0;
+    padding-left: 0; */
+    padding-right: 0;
+    grid-template-columns: 100%;
   }
 
   @media (--mediaLaptop) {
-    gap: var(--space3XL);
-    padding-bottom: var(--space3XL);
+    /* gap: var(--space3XL);
+    padding-bottom: var(--space3XL); */
+    padding-right: 0;
+    grid-template-columns: 100%;
   }
 
   @media (--singleColumnWidth), (--mediaMobileLS) {
