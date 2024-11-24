@@ -131,6 +131,9 @@
     opacity: 1;
   }
 }
+.svgtext {
+  fill: var(--textTitle);
+}
 
 .button {
   opacity: 0;

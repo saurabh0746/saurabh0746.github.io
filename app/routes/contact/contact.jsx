@@ -10,19 +10,24 @@ import { Text } from '~/components/text';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
 import { useFormInput } from '~/hooks';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { Form, useActionData, useNavigation, useSubmit } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import emailjs from '@emailjs/browser';
 import styles from './contact.module.css';
+
+// Replace these with your EmailJS credentials
+const EMAILJS_SERVICE_ID = 'service_egut8tg';
+const EMAILJS_TEMPLATE_ID = 'template_aw55eoj';
+const EMAILJS_PUBLIC_KEY = 'dT3Rpv20PE5HidAhT';
 
 export const meta = () => {
   return baseMeta({
     title: 'Contact',
     description:
-      'Send me a message if you’re interested in discussing a project or if you just want to say hi',
+      'Send me a message if you are interested in discussing a project or if you just want to say hi',
   });
 };
 
@@ -30,25 +35,24 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export async function action({ context, request }) {
-  const ses = new SESClient({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
-
+export async function action({ request }) {
   const formData = await request.formData();
   const isBot = String(formData.get('name'));
   const email = String(formData.get('email'));
   const message = String(formData.get('message'));
+  const success = formData.get('success');
+  
+  // Return success if it's marked as successful (client-side EmailJS worked)
+  if (success === 'true') {
+    return json({ success: true });
+  }
+
   const errors = {};
 
   // Return without sending if a bot trips the honeypot
   if (isBot) return json({ success: true });
 
-  // Handle input validation on the server
+  // Handle input validation
   if (!email || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
@@ -69,38 +73,55 @@ export async function action({ context, request }) {
     return json({ errors });
   }
 
-  // Send email via Amazon SES
-  await ses.send(
-    new SendEmailCommand({
-      Destination: {
-        ToAddresses: [context.cloudflare.env.EMAIL],
-      },
-      Message: {
-        Body: {
-          Text: {
-            Data: `From: ${email}\n\n${message}`,
-          },
-        },
-        Subject: {
-          Data: `Portfolio message from ${email}`,
-        },
-      },
-      Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
-      ReplyToAddresses: [email],
-    })
-  );
-
-  return json({ success: true });
+  return json({ validationPassed: true });
 }
 
 export const Contact = () => {
+  const formRef = useRef();
   const errorRef = useRef();
   const email = useFormInput('');
   const message = useFormInput('');
   const initDelay = tokens.base.durationS;
   const actionData = useActionData();
   const { state } = useNavigation();
+  const submit = useSubmit();
   const sending = state === 'submitting';
+
+  useEffect(() => {
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+
+  useEffect(() => {
+    // If validation passed, send the email
+    if (actionData?.validationPassed) {
+      const formData = new FormData(formRef.current);
+      
+      emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_email: formData.get('email'),
+          message: formData.get('message'),
+          reply_to: formData.get('email'),
+        }
+      ).then(
+        () => {
+          // If email sent successfully, submit the form again with success flag
+          const successData = new FormData();
+          successData.append('success', 'true');
+          submit(successData, { method: 'post' });
+        },
+        () => {
+          // If email failed, show error
+          submit(
+            { errors: { message: 'Failed to send message. Please try again later.' } },
+            { method: 'post' }
+          );
+        }
+      );
+    }
+  }, [actionData?.validationPassed, submit]);
 
   return (
     <Section className={styles.contact}>
@@ -110,7 +131,7 @@ export const Contact = () => {
             unstable_viewTransition
             className={styles.form}
             method="post"
-            ref={nodeRef}
+            ref={formRef}
           >
             <Heading
               className={styles.title}
@@ -215,7 +236,7 @@ export const Contact = () => {
               data-status={status}
               style={getDelay(tokens.base.durationXS)}
             >
-              I’ll get back to you within a couple days, sit tight
+              I'll get back to you within a couple days, sit tight
             </Text>
             <Button
               secondary

@@ -101,8 +101,11 @@ export const Profile = ({ id, visible, sectionRef }) => {
                   sizes={`(max-width: ${media.mobile}px) 100vw, 480px`}
                   alt="Me"
                 />
-                <svg className={styles.svg} data-visible={visible} viewBox="0 0 136 766">
+                {/* <svg className={styles.svg} data-visible={visible} viewBox="0 0 136 766">
                   <use href={`${katakana}#katakana-profile`} />
+                </svg> */}
+                <svg className={styles.svg} data-visible={visible} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 220">
+                  <text className={styles.svgtext}  x="50" y="120" font-family="Papyrus" font-size="60" text-anchor="middle" writing-mode="tb">अभियंता</text>
                 </svg>
               </div>
             </div>

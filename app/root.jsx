@@ -9,7 +9,7 @@ import {
   useNavigation,
   useRouteError,
 } from '@remix-run/react';
-import { createCookieSessionStorage, json } from '@remix-run/cloudflare';
+import { createCookieSessionStorage, json, redirect} from '@remix-run/cloudflare';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
 import GothamBook from '~/assets/fonts/gotham-book.woff2';
 import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
@@ -46,9 +46,19 @@ export const links = () => [
   { rel: 'author', href: '/humans.txt', type: 'text/plain' },
 ];
 
+
+const ALLOWED_ROUTES = ['/', '/#intro', '/#project', '/contact', '/#details'];
+
 export const loader = async ({ request, context }) => {
   const { url } = request;
+  const urlObj = new URL(url);
   const { pathname } = new URL(url);
+  const fullPath = pathname + urlObj.hash;
+
+   // Check if the current path is allowed
+   if (!ALLOWED_ROUTES.includes(fullPath)) {
+    return redirect('/');
+  }
   const pathnameSliced = pathname.endsWith('/') ? pathname.slice(0, -1) : url;
   const canonicalUrl = `${config.url}${pathnameSliced}`;
 

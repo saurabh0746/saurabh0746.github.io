@@ -14,6 +14,19 @@ import { formatDate } from '~/utils/date';
 import { classes, cssProps } from '~/utils/style';
 import styles from './articles.module.css';
 
+const projects = [
+  {
+      "slug": "https://saurabh0746.medium.com/building-a-robust-node-js-application-with-mysql-integration-a-step-by-step-guide-d6ffc3fb8298",
+      "timecode": "00:04:00:00",
+      "frontmatter": {
+          "title": "Building a Robust Node.js Application with MySQL Integration",
+          "abstract": "A Step-by-Step Guide to build a NodeJS application with MySL",
+          "date": "2023-05-05",
+          "banner": ""
+      }
+  }
+];
+
 function ArticlesPost({ slug, frontmatter, timecode, index }) {
   const [hovered, setHovered] = useState(false);
   const [dateTime, setDateTime] = useState(null);
@@ -31,6 +44,12 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
   const handleMouseLeave = () => {
     setHovered(false);
   };
+
+  // For external links, use <a> instead of RouterLink
+  const LinkComponent = slug.startsWith('http') ? 'a' : RouterLink;
+  const linkProps = slug.startsWith('http') 
+    ? { href: slug, target: "_blank", rel: "noopener noreferrer" }
+    : { to: `${slug}`, unstable_viewTransition: true, prefetch: "intent" };
 
   return (
     <article
@@ -55,10 +74,8 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
           />
         </div>
       )}
-      <RouterLink
-        unstable_viewTransition
-        prefetch="intent"
-        to={`/articles/${slug}`}
+      <LinkComponent
+        {...linkProps}
         className={styles.postLink}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -83,7 +100,7 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
             </Text>
           </div>
         </div>
-      </RouterLink>
+      </LinkComponent>
       {featured && (
         <Text aria-hidden className={styles.postTag} size="s">
           477
@@ -134,7 +151,10 @@ function SkeletonPost({ index }) {
 }
 
 export function Articles() {
-  const { posts, featured } = useLoaderData();
+  // const { posts,  featured } = useLoaderData();
+  const { featured } = useLoaderData();
+  const posts = projects;
+  
   const { width } = useWindowSize();
   const singleColumnWidth = 1190;
   const isSingleColumn = width <= singleColumnWidth;
@@ -155,11 +175,11 @@ export function Articles() {
       {posts.map(({ slug, ...post }, index) => (
         <ArticlesPost key={slug} slug={slug} index={index} {...post} />
       ))}
-      {Array(2)
+      {/* {Array(2)
         .fill()
         .map((skeleton, index) => (
           <SkeletonPost key={index} index={index} />
-        ))}
+        ))} */}
     </div>
   );
 

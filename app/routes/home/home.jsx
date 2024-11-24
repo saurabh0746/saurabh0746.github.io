@@ -19,6 +19,15 @@ import { useEffect, useRef, useState } from 'react';
 import config from '~/config.json';
 import styles from './home.module.css';
 
+import aaina from '~/assets/aaina.png';
+import aaina2 from '~/assets/aaina.png';
+import edarah from '~/assets/edarah.png';
+import edarah2 from '~/assets/edarah.png';
+import wigt from '~/assets/wigt.png';
+import wigt2 from '~/assets/wigt.png';
+import canrahsbc from '~/assets/canrahsbc.png';
+import canrahsbc2 from '~/assets/canrahsbc.png';
+
 // Prefetch draco decoader wasm
 export const links = () => {
   return [
@@ -53,10 +62,11 @@ export const Home = () => {
   const projectOne = useRef();
   const projectTwo = useRef();
   const projectThree = useRef();
+  const projectFour = useRef();
   const details = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, projectThree, details];
+  const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
     
 
     const sectionObserver = new IntersectionObserver(
@@ -100,26 +110,27 @@ export const Home = () => {
         scrollIndicatorHidden={scrollIndicatorHidden}
       />
       <ProjectSummary
-        id="project-1"
+        id="project"
         sectionRef={projectOne}
         visible={visibleSections.includes(projectOne.current)}
         index={1}
-        title="Designing the future of education"
-        description="Designing a platform to help educators build better online courseware"
+        title="AAINA : Dashboard for Cities"
+        description="It is a dashboard for cities, an initiative of the Ministry of Housing and Urban Affairs is being envisaged which would serve as a tool for comparing similarly placed ULBs (Urban Local Bodies) and promoting peer learning amongst ULBs. This dashboard will inspire the ULBs by pointing to possibilities and areas of improvement and providing them the opportunity to learn and engage with frontrunners. This Project utilizes React.js, Tailwind css and few NPM libraries at frontend to create a robust platform."
         buttonText="View project"
-        buttonLink="/projects/smart-sparrow"
+        // buttonLink="/projects/smart-sparrow"
+        buttonLink="https://aaina.gov.in/"
         model={{
           type: 'laptop',
-          alt: 'Smart Sparrow lesson builder',
+          alt: 'Image of AAINA',
           textures: [
             {
-              srcSet: `${sprTexture} 1280w, ${sprTextureLarge} 2560w`,
+              srcSet: `${aaina} 1280w, ${aaina2} 2560w`,
               placeholder: sprTexturePlaceholder,
             },
           ],
         }}
       />
-      <ProjectSummary
+      {/* <ProjectSummary
         id="project-2"
         alternate
         sectionRef={projectTwo}
@@ -143,22 +154,62 @@ export const Home = () => {
             },
           ],
         }}
+      /> */}
+       <ProjectSummary
+        id="project-2"
+        sectionRef={projectTwo}
+        visible={visibleSections.includes(projectTwo.current)}
+        index={2}
+        title="Saudi Edarah Holding Co."
+        description="It is a product that provides services like towing, Washing, services etc. In this project I have mastered cross-platform development for web, Android, and iOS apps, deepening skills in Angular and Ionic frameworks, and honing problem-solving abilities while collaborating effectively within a team."
+        buttonText="View project"
+        buttonLink="https://edarah.com.sa/"
+        model={{
+          type: 'laptop',
+          alt: 'Image of Saudi Edarah Hollding',
+          textures: [
+            {
+              srcSet: `${edarah} 800w, ${edarah2} 1920w`,
+              placeholder: sliceTexturePlaceholder,
+            },
+          ],
+        }}
       />
       <ProjectSummary
         id="project-3"
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Biomedical image collaboration"
-        description="Increasing the amount of collaboration in Slice, an app for biomedical imaging"
+        title="widg.io : No Code Web Widgets"
+        description="Widgets are built using a modern framework that takes inspiration from React. The central idea is that you build your UI out of widgets. Widgets describe what their view should look like given their current conﬁguration and state. When a widget’s state changes, the widget rebuilds its description, which the framework differs against the previous description in order to determine the minimal changes needed in the underlying render tree to transition from one state to the next."
         buttonText="View project"
-        buttonLink="/projects/slice"
+        buttonLink="https://www.widg.io"
         model={{
           type: 'laptop',
-          alt: 'Annotating a biomedical image in the Slice app',
+          alt: 'widg.io Image',
           textures: [
             {
-              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
+              srcSet: `${wigt} 800w, ${wigt2} 1920w`,
+              placeholder: sliceTexturePlaceholder,
+            },
+          ],
+        }}
+      />
+       <ProjectSummary
+        id="project-4"
+        sectionRef={projectFour}
+        visible={visibleSections.includes(projectFour.current)}
+        index={4}
+        title="CANARA/HSBC BANK"
+        description="Canara HSBC Oriental Bank of Commerce Life Insurance iSelect Smart360 Term Plan is your ﬁnancial companion ensuring that in case of unfortunate demise of Life Assured, the family still has its ﬁnancial needs met. This is a Non-Linked, Non-Participating, Individual, Pure Risk Premium, Life Insurance Plan which comes as an all in one product offering you the ﬂexibility to take cover as per your needs and ensuring that the dreams of your loved ones are not compromised."
+        buttonText="View project"
+        buttonLink="https://www.canarahsbclife.com/"
+        model={{
+          type: 'laptop',
+          alt: 'CANARA/HSBC BANK Image',
+          textures: [
+            {
+              srcSet: `${canrahsbc} 800w, ${canrahsbc2} 1920w`,
               placeholder: sliceTexturePlaceholder,
             },
           ],

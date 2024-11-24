@@ -6,6 +6,6 @@ addons.setConfig({
     ...themes.dark,
     brandImage: './icon.svg',
     brandTitle: 'Saurabh Chaudhary Components',
-    brandUrl: 'https://hamishw.com',
+    // brandUrl: 'https://hamishw.com',
   },
 });

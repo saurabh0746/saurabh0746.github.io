@@ -49,16 +49,28 @@ export function ProjectSummary({
 
   function renderKatakana(device, visible) {
     return (
-      <svg
-        type="project"
+      // <svg
+      //   type="project"
+      //   data-visible={visible && modelLoaded}
+      //   data-light={theme === 'light'}
+      //   style={cssProps({ opacity: svgOpacity })}
+      //   className={styles.svg}
+      //   data-device={device}
+      //   viewBox="0 0 751 136"
+      // >
+      //   <use href={`${katakana}#katakana-project`} />
+      // </svg>
+      <svg 
+      xmlns="http://www.w3.org/2000/svg"
+          type="project"
         data-visible={visible && modelLoaded}
         data-light={theme === 'light'}
         style={cssProps({ opacity: svgOpacity })}
         className={styles.svg}
         data-device={device}
-        viewBox="0 0 751 136"
-      >
-        <use href={`${katakana}#katakana-project`} />
+        viewBox="0 0 300 100"
+        >
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="80" font-family="Impact"  className={styles.svgText}>परियोजना</text>
       </svg>
     );
   }
