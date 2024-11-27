@@ -1,12 +1,14 @@
 {
   "name": "portfolio",
-  "homepage": "https://hamishw.com",
+  "homepage": "",
   "description": "Portfolio site for Saurabh Chaudhary",
   "repository": "https://github.com/saurabh0746",
   "author": "Saurabh Chaudhary",
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "netlify:build": "remix build",
+    "netlify:serve": "netlify dev",
     "build": "remix vite:build",
     "dev": "node ./scripts/dev.cjs && remix vite:dev",
     "start": "wrangler pages dev ./build/client",
@@ -22,6 +24,7 @@
     "@mdx-js/react": "^3.0.1",
     "@remix-run/cloudflare": "^2.7.1",
     "@remix-run/cloudflare-pages": "^2.7.1",
+    "@remix-run/netlify": "^1.19.3",
     "@remix-run/react": "^2.7.1",
     "framer-motion": "11.0.5",
     "isbot": "^4.1.0",
